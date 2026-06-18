@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Inteligente de Imagen a Excel (OCR) | Jipson Delgado</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Tesseract.js library for Browser-based OCR -->
+    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
+</head>
+<body class="dark-theme">
+    <!-- Background Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <header class="tool-header">
+        <div class="container header-container">
+            <a href="../index.html" class="btn-back">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Volver al Portafolio
+            </a>
+            <h1 class="tool-title"><span class="gradient-text font-bold">OCR</span> a Excel</h1>
+        </div>
+    </header>
+
+    <main class="container tool-main">
+        <section class="intro-section">
+            <h2>Conversor Inteligente de Imagen a Tabla</h2>
+            <p>Sube una imagen o captura de pantalla de una tabla (por ejemplo, desde un PDF) para extraer sus datos automáticamente, editarlos en tiempo real y descargarlos en formato Excel.</p>
+        </section>
+
+        <!-- Tool Workspace Card -->
+        <div class="workspace-card">
+            <!-- 1. Drop Zone -->
+            <div id="drop-zone" class="drop-zone">
+                <div class="drop-zone-content">
+                    <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+                    </svg>
+                    <h3>Arrastra tu imagen aquí</h3>
+                    <p>O haz clic para buscar en tu dispositivo (Formatos: PNG, JPG, JPEG)</p>
+                    <span class="badge">Procesamiento 100% Local y Privado</span>
+                </div>
+                <input type="file" id="file-input" accept="image/*" class="hidden">
+            </div>
+
+            <!-- 2. Preview & Loading Area (Side by side on desktop) -->
+            <div id="processing-area" class="processing-area hidden">
+                <div class="preview-panel">
+                    <h3>Imagen Cargada</h3>
+                    <div class="img-preview-container">
+                        <img id="image-preview" src="" alt="Vista previa de la imagen">
+                    </div>
+                    <button id="change-image-btn" class="btn btn-secondary btn-sm btn-full">Cargar otra imagen</button>
+                </div>
+
+                <div class="status-panel">
+                    <!-- Progress Spinner/Bar -->
+                    <div id="progress-container" class="progress-container">
+                        <div class="spinner"></div>
+                        <h3 id="status-text">Inicializando Motor de IA...</h3>
+                        <div class="progress-bar-wrapper">
+                            <div id="progress-bar" class="progress-bar" style="width: 0%;"></div>
+                        </div>
+                        <p class="progress-subtext">Esto puede tardar unos segundos la primera vez que se carga el motor de idioma en español.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 3. Result Table Area -->
+            <div id="result-area" class="result-area hidden">
+                <div class="toolbar">
+                    <h3>Datos Extraídos (Haz doble clic en cualquier celda para editar)</h3>
+                    <div class="toolbar-buttons">
+                        <button id="export-csv-btn" class="btn btn-primary btn-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="16" height="16" style="margin-right: 6px; vertical-align: middle;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                            </svg>
+                            Exportar a Excel (CSV)
+                        </button>
+                        <button id="copy-clipboard-btn" class="btn btn-secondary btn-sm">Copiar Tabla</button>
+                        <button id="clear-btn" class="btn btn-secondary btn-sm danger">Limpiar</button>
+                    </div>
+                </div>
+
+                <!-- Editable Interactive Table Wrapper -->
+                <div class="table-wrapper">
+                    <table id="editable-table">
+                        <!-- Head and Body will be generated by script.js -->
+                    </table>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="tool-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 Jipson Delgado. Diseñado con HTML, CSS, JavaScript y Tesseract.js.</p>
+            <p>La IA de este conversor procesa las imágenes localmente en tu ordenador, garantizando privacidad absoluta de tus documentos.</p>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
