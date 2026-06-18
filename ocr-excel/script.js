@@ -1,10 +1,6 @@
-// OCR-to-Excel: Con soporte completo para PDF e Imagen
-// OPTIMIZADO: Worker precargado al inicio y reutilizado en cada proceso
-
 const PDFJS_CDN = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/';
 
 document.addEventListener('DOMContentLoaded', () => {
-    // --- Elementos del DOM ---
     const dropZone        = document.getElementById('drop-zone');
     const fileInput       = document.getElementById('file-input');
     const processingArea  = document.getElementById('processing-area');
@@ -26,38 +22,76 @@ document.addEventListener('DOMContentLoaded', () => {
     const previewTitle    = document.getElementById('preview-title');
     const dropZoneHint    = document.getElementById('drop-zone-hint');
 
-    // --- Estado interno ---
     let pdfDocument   = null;
     let currentPage   = 1;
     let totalPages    = 0;
     let currentFileType = null;
+    let currentImageUrl = null;
 
-    // ── OPTIMIZACIÓN CLAVE: Worker precargado ────────────────────────────────
-    // Se inicia en el fondo apenas carga la página para que cuando el usuario
-    // suba su archivo, el motor ya esté listo y no tenga que esperar.
     let tesseractWorker = null;
     let workerReady     = false;
+    let workerLoadProgress = 0;
+    let workerLoadStatus = '';
+    let pdfjsLib        = null;
+    let pdfReady        = false;
+    let pdfPreloadPromise = null;
+
+    const ESTIMATED_ENGINE_MB = 20;
 
     async function initWorker() {
         try {
             updateDropZoneHint('⚙️ Preparando motor de IA en segundo plano...');
-            tesseractWorker = await Tesseract.createWorker('spa+eng');
+            tesseractWorker = await Tesseract.createWorker({
+                logger: (m) => {
+                    if (m.status && typeof m.progress === 'number') {
+                        workerLoadProgress = m.progress;
+                        workerLoadStatus = m.status;
+                        if (m.status.includes('loading') || m.status.includes('initializing') || m.status.includes('download')) {
+                            const pct = Math.round(m.progress * 100);
+                            const remainingMB = Math.max(0, ESTIMATED_ENGINE_MB * (1 - m.progress));
+                            updateDropZoneHint(`⚙️ ${m.status} ${pct}% · faltan ${remainingMB.toFixed(1)} MB`);
+                        }
+                    }
+                }
+            });
+            await tesseractWorker.loadLanguage('spa+eng');
+            await tesseractWorker.initialize('spa+eng');
             workerReady = true;
-            updateDropZoneHint('✅ Motor listo. Arrastra tu PDF o imagen aquí.');
+            updateDropZoneHint('✅ Motor listo. Cargando lector de PDF...');
+            preloadPDFjs();
         } catch (err) {
             console.error('Error al inicializar worker:', err);
             updateDropZoneHint('⚠️ Recarga la página si el motor no responde.');
         }
     }
 
+    async function preloadPDFjs() {
+        if (pdfPreloadPromise) return pdfPreloadPromise;
+        pdfPreloadPromise = (async () => {
+            try {
+                updateDropZoneHint('⚙️ Precargando lector de PDF...');
+                /* @vite-ignore */
+                pdfjsLib = await import(/* @vite-ignore */ PDFJS_CDN + 'pdf.min.mjs');
+                pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_CDN + 'pdf.worker.min.mjs';
+                pdfReady = true;
+                if (workerReady) {
+                    updateDropZoneHint('✅ Motor de IA y PDF listos. Arrastra tu PDF o imagen aquí.');
+                }
+            } catch (err) {
+                console.error('Error al precargar PDF.js:', err);
+                updateDropZoneHint('⚠️ No se pudo pre-cargar PDF.js. El PDF cargará al momento.');
+                pdfPreloadPromise = null;
+            }
+        })();
+        return pdfPreloadPromise;
+    }
+
     function updateDropZoneHint(msg) {
         if (dropZoneHint) dropZoneHint.textContent = msg;
     }
 
-    // Precarga inmediata
     initWorker();
 
-    // ── 1. Drag & Drop / File Input ──────────────────────────────────────────
     dropZone.addEventListener('click', () => fileInput.click());
     dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
     dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
@@ -72,7 +106,6 @@ document.addEventListener('DOMContentLoaded', () => {
     changeImageBtn.addEventListener('click', resetTool);
     clearBtn.addEventListener('click', resetTool);
 
-    // ── 2. Detectar tipo de archivo ──────────────────────────────────────────
     function handleFile(file) {
         const isPDF  = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
         const isImage = file.type.startsWith('image/');
@@ -88,18 +121,42 @@ document.addEventListener('DOMContentLoaded', () => {
         isPDF ? processPDF(file) : processImage(file);
     }
 
-    // ── 3. Procesar Imagen ───────────────────────────────────────────────────
     function processImage(file) {
         previewTitle.textContent = 'Imagen Cargada';
         pdfPageNav.classList.add('hidden');
         pdfCanvas.classList.add('hidden');
         imagePreview.classList.remove('hidden');
-        const reader = new FileReader();
-        reader.onload = (e) => { imagePreview.src = e.target.result; runOCR(e.target.result); };
-        reader.readAsDataURL(file);
+        if (currentImageUrl) {
+            URL.revokeObjectURL(currentImageUrl);
+            currentImageUrl = null;
+        }
+        currentImageUrl = URL.createObjectURL(file);
+        imagePreview.src = currentImageUrl;
+        imagePreview.onload = async () => {
+            const resizedSrc = await getResizedImageDataUrl(currentImageUrl, 1400);
+            runOCR(resizedSrc);
+        };
     }
 
-    // ── 4. Procesar PDF ──────────────────────────────────────────────────────
+    async function getResizedImageDataUrl(src, maxSize = 1000) {
+        return new Promise((resolve, reject) => {
+            const img = new Image();
+            img.onload = () => {
+                const ratio = Math.min(maxSize / img.width, maxSize / img.height, 1);
+                const canvas = document.createElement('canvas');
+                canvas.width = Math.round(img.width * ratio);
+                canvas.height = Math.round(img.height * ratio);
+                const ctx = canvas.getContext('2d');
+                ctx.imageSmoothingEnabled = true;
+                ctx.imageSmoothingQuality = 'low';
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                resolve(canvas.toDataURL('image/jpeg', 0.85));
+            };
+            img.onerror = (error) => reject(error);
+            img.src = src;
+        });
+    }
+
     async function processPDF(file) {
         previewTitle.textContent = 'PDF Cargado';
         imagePreview.classList.add('hidden');
@@ -107,9 +164,10 @@ document.addEventListener('DOMContentLoaded', () => {
         pdfPageNav.classList.remove('hidden');
         setStatus('Cargando PDF...', 5);
 
-        /* @vite-ignore */
-        const pdfjsLib = await import(/* @vite-ignore */ PDFJS_CDN + 'pdf.min.mjs');
-        pdfjsLib.GlobalWorkerOptions.workerSrc = PDFJS_CDN + 'pdf.worker.min.mjs';
+        if (!pdfReady) {
+            setStatus('Cargando PDF.js en segundo plano...', 10);
+            await preloadPDFjs();
+        }
 
         const arrayBuffer = await file.arrayBuffer();
         pdfDocument = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
@@ -122,8 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
     async function renderAndOCRPage(pageNum) {
         setStatus(`Renderizando página ${pageNum} de ${totalPages}...`, 15);
         const page     = await pdfDocument.getPage(pageNum);
-        // Escala 2.0 — buen balance entre velocidad y calidad
-        const viewport = page.getViewport({ scale: 2.0 });
+        const initialViewport = page.getViewport({ scale: 1.0 });
+        const maxSize = 1400;
+        const scale   = Math.min(maxSize / initialViewport.width, maxSize / initialViewport.height, 1);
+        const viewport = page.getViewport({ scale });
         pdfCanvas.width  = viewport.width;
         pdfCanvas.height = viewport.height;
         await page.render({ canvasContext: pdfCanvas.getContext('2d'), viewport }).promise;
@@ -142,20 +202,17 @@ document.addEventListener('DOMContentLoaded', () => {
         nextPageBtn.disabled = currentPage >= totalPages;
     }
 
-    // ── 5. OCR reutilizando el worker precargado ─────────────────────────────
     async function runOCR(imageSrc) {
         progressContainer.classList.remove('hidden');
 
-        // Si el worker aún no está listo (descargando), esperar
         if (!workerReady) {
-            setStatus('⏳ Descargando motor de IA por primera vez (~20MB)...', 5);
+            setStatus('⏳ Descargando motor de IA...', 5);
             await waitForWorker();
         }
 
         setStatus('Analizando imagen...', 20);
 
         try {
-            // REUTILIZA el worker ya cargado — mucho más rápido
             const result = await tesseractWorker.recognize(imageSrc, {}, {
                 onProgress: (p) => {
                     if (p.status === 'recognizing text') {
@@ -183,12 +240,20 @@ document.addEventListener('DOMContentLoaded', () => {
     function waitForWorker() {
         return new Promise(resolve => {
             const check = setInterval(() => {
-                if (workerReady) { clearInterval(check); resolve(); }
-            }, 300);
+                if (workerReady) {
+                    clearInterval(check);
+                    resolve();
+                    return;
+                }
+
+                const remainingMB = Math.max(0, ESTIMATED_ENGINE_MB * (1 - workerLoadProgress));
+                const pct = Math.round(workerLoadProgress * 100);
+                const statusMsg = workerLoadStatus || 'Descargando motor de IA';
+                setStatus(`⏳ ${statusMsg} ${pct}% · faltan ${remainingMB.toFixed(1)} MB`, Math.max(5, pct));
+            }, 200);
         });
     }
 
-    // ── 6. Texto OCR → Tabla HTML editable ───────────────────────────────────
     function buildTableFromText(rawText) {
         editableTable.innerHTML = '';
         const lines = rawText.split('\n').map(l => l.trim()).filter(l => l.length > 1);
@@ -224,7 +289,6 @@ document.addEventListener('DOMContentLoaded', () => {
         editableTable.appendChild(tbody);
     }
 
-    // ── 7. Exportar CSV / Copiar ──────────────────────────────────────────────
     exportCsvBtn.addEventListener('click', () => {
         const rows = Array.from(editableTable.querySelectorAll('tr'));
         const csv  = rows.map(tr =>
@@ -250,7 +314,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }).catch(() => alert('Selecciona y copia la tabla manualmente.'));
     });
 
-    // ── 8. Utilidades ─────────────────────────────────────────────────────────
     function setStatus(msg, pct) {
         statusText.textContent = msg;
         progressBar.style.width = `${pct}%`;
@@ -258,6 +321,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function resetTool() {
         fileInput.value = '';
+        if (currentImageUrl) {
+            URL.revokeObjectURL(currentImageUrl);
+            currentImageUrl = null;
+        }
         imagePreview.src = '';
         pdfDocument = null;
         currentPage = 1; totalPages = 0; currentFileType = null;
