@@ -3,12 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Conversor Inteligente de Imagen a Excel (OCR) | Jipson Delgado</title>
+    <title>Conversor PDF/Imagen a Excel (OCR) | Jipson Delgado</title>
     <!-- Google Fonts: Outfit -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
+    <!-- PDF.js for PDF rendering -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/4.4.168/pdf.min.mjs" type="module"></script>
     <!-- Tesseract.js library for Browser-based OCR -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
 </head>
@@ -25,14 +27,14 @@
                 </svg>
                 Volver al Portafolio
             </a>
-            <h1 class="tool-title"><span class="gradient-text font-bold">OCR</span> a Excel</h1>
+            <h1 class="tool-title"><span class="gradient-text font-bold">PDF/OCR</span> a Excel</h1>
         </div>
     </header>
 
     <main class="container tool-main">
         <section class="intro-section">
-            <h2>Conversor Inteligente de Imagen a Tabla</h2>
-            <p>Sube una imagen o captura de pantalla de una tabla (por ejemplo, desde un PDF) para extraer sus datos automáticamente, editarlos en tiempo real y descargarlos en formato Excel.</p>
+            <h2>Conversor Inteligente de PDF e Imagen a Tabla</h2>
+            <p>Sube un <strong>PDF</strong> o una imagen con tablas para extraer sus datos automáticamente usando Inteligencia Artificial (OCR), editarlos en tiempo real y descargarlos directamente en formato Excel.</p>
         </section>
 
         <!-- Tool Workspace Card -->
@@ -43,19 +45,34 @@
                     <svg class="upload-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                     </svg>
-                    <h3>Arrastra tu imagen aquí</h3>
-                    <p>O haz clic para buscar en tu dispositivo (Formatos: PNG, JPG, JPEG)</p>
-                    <span class="badge">Procesamiento 100% Local y Privado</span>
+                    <h3>Arrastra tu PDF o imagen aquí</h3>
+                    <div class="file-type-badges">
+                        <span class="file-badge pdf">PDF</span>
+                        <span class="file-badge img">PNG</span>
+                        <span class="file-badge img">JPG</span>
+                        <span class="file-badge img">JPEG</span>
+                    </div>
+                    <p>O haz clic para buscar en tu dispositivo</p>
+                    <span class="badge">Procesamiento 100% Local y Privado 🔒</span>
                 </div>
-                <input type="file" id="file-input" accept="image/*" class="hidden">
+                <input type="file" id="file-input" accept="image/*,.pdf,application/pdf" class="hidden">
             </div>
 
             <!-- 2. Preview & Loading Area (Side by side on desktop) -->
             <div id="processing-area" class="processing-area hidden">
                 <div class="preview-panel">
-                    <h3>Imagen Cargada</h3>
+                    <h3 id="preview-title">Archivo Cargado</h3>
+                    <!-- PDF Page Navigator (hidden for images) -->
+                    <div id="pdf-page-nav" class="pdf-page-nav hidden">
+                        <button id="prev-page-btn" class="btn btn-secondary btn-sm" disabled>◀ Anterior</button>
+                        <span id="page-indicator" class="page-indicator">Pág. 1 / 1</span>
+                        <button id="next-page-btn" class="btn btn-secondary btn-sm" disabled>Siguiente ▶</button>
+                    </div>
                     <div class="img-preview-container">
-                        <img id="image-preview" src="" alt="Vista previa de la imagen">
+                        <!-- Canvas for PDF rendering -->
+                        <canvas id="pdf-canvas" class="hidden"></canvas>
+                        <!-- Img for regular image files -->
+                        <img id="image-preview" src="" alt="Vista previa">
                     </div>
                     <button id="change-image-btn" class="btn btn-secondary btn-sm btn-full">Cargar otra imagen</button>
                 </div>

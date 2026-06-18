@@ -95,6 +95,53 @@ body {
     margin-top: 12px;
 }
 
+/* File type format badges */
+.file-type-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.file-badge {
+    padding: 4px 14px;
+    border-radius: 100px;
+    font-size: 0.8rem;
+    font-weight: 700;
+    border: 1px solid;
+}
+
+.file-badge.pdf {
+    background-color: rgba(239, 68, 68, 0.1);
+    border-color: #ef4444;
+    color: #ef4444;
+}
+
+.file-badge.img {
+    background-color: rgba(59, 130, 246, 0.1);
+    border-color: var(--accent-primary);
+    color: var(--accent-primary);
+}
+
+/* PDF Page Navigator */
+.pdf-page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 12px;
+    background-color: rgba(18, 24, 38, 0.5);
+    border: 1px solid var(--card-border);
+    border-radius: var(--border-radius-sm);
+    padding: 8px 12px;
+}
+
+.page-indicator {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--accent-secondary);
+    white-space: nowrap;
+}
+
 /* Header */
 .tool-header {
     background-color: rgba(11, 15, 25, 0.85);
