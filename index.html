@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jipson Delgado | Portafolio Profesional</title>
+    <!-- Google Fonts: Outfit -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+    <!-- Background Elements -->
+    <div class="bg-glow bg-glow-1"></div>
+    <div class="bg-glow bg-glow-2"></div>
+
+    <!-- Navigation Header -->
+    <header class="main-header">
+        <nav class="nav-container">
+            <a href="#" class="logo">
+                <span class="logo-accent">&lt;</span>Jipson.Dev<span class="logo-accent">/&gt;</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#perfil" class="nav-link">Perfil</a></li>
+                <li><a href="#habilidades" class="nav-link">Habilidades</a></li>
+                <li><a href="#experiencia" class="nav-link">Experiencia</a></li>
+                <li><a href="#proyectos" class="nav-link">Proyectos</a></li>
+                <li><a href="#contacto" class="nav-link">Contacto</a></li>
+            </ul>
+            <div class="nav-actions">
+                <button id="theme-toggle" class="btn-icon" aria-label="Cambiar tema">
+                    <!-- Moon Icon (Dark Mode by default) -->
+                    <svg id="theme-icon-moon" class="theme-icon" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                    </svg>
+                    <!-- Sun Icon (Hidden initially) -->
+                    <svg id="theme-icon-sun" class="theme-icon hidden" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707.707m0-11.314l.707.707m11.314 11.314l.707-.707M12 17a5 5 0 100-10 5 5 0 000 10z" />
+                    </svg>
+                </button>
+                <button id="print-cv" class="btn btn-secondary btn-sm print-hidden">Imprimir CV</button>
+            </div>
+            <button class="mobile-menu-btn" aria-label="Abrir menú">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Mobile Navigation Drawer -->
+    <div class="mobile-drawer">
+        <ul class="mobile-nav-links">
+            <li><a href="#perfil" class="mobile-nav-link">Perfil</a></li>
+            <li><a href="#habilidades" class="mobile-nav-link">Habilidades</a></li>
+            <li><a href="#experiencia" class="mobile-nav-link">Experiencia</a></li>
+            <li><a href="#proyectos" class="mobile-nav-link">Proyectos</a></li>
+            <li><a href="#contacto" class="mobile-nav-link">Contacto</a></li>
+            <li><button id="print-cv-mobile" class="btn btn-secondary btn-full">Imprimir CV</button></li>
+        </ul>
+    </div>
+
+    <main class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="hero-section">
+            <div class="container hero-container">
+                <div class="hero-content">
+                    <div class="badge fade-in">Disponible para trabajar medio tiempo</div>
+                    <h1 class="hero-title fade-in">
+                        Hola, soy <span class="gradient-text font-bold">Jipson Delgado</span>
+                    </h1>
+                    <h2 class="hero-subtitle fade-in">Estudiante de Ingeniería en TI &amp; Especialista en Servicio</h2>
+                    <p class="hero-description fade-in">
+                        Combino mis estudios de 5to semestre en Ingeniería en Tecnologías de la Información con una sólida experiencia en atención al cliente. Apasionado por la tecnología, el desarrollo web Frontend (HTML, CSS, JavaScript) y la resolución ágil de problemas.
+                    </p>
+                    <div class="hero-buttons fade-in">
+                        <a href="#contacto" class="btn btn-primary">Contáctame</a>
+                        <a href="#habilidades" class="btn btn-secondary">Ver Habilidades</a>
+                    </div>
+                </div>
+                <div class="hero-image-container fade-in">
+                    <div class="profile-avatar-frame">
+                        <div class="profile-avatar-placeholder">
+                            <!-- SVG Tech Logo representation as an avatar placeholder -->
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="80" height="80">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4" />
+                            </svg>
+                            <span>JD</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="container grid-stats">
+                <div class="stat-card">
+                    <div class="stat-num gradient-text">5to</div>
+                    <div class="stat-label">Semestre de Ingeniería TI</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num gradient-text">22</div>
+                    <div class="stat-label">Años de Edad</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num gradient-text">100%</div>
+                    <div class="stat-label">Compromiso y Adaptabilidad</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num gradient-text">3+</div>
+                    <div class="stat-label">Años de Experiencia Laboral</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Profile Section -->
+        <section id="perfil" class="section profile-section scroll-reveal">
+            <div class="container">
+                <h2 class="section-title">Perfil Profesional</h2>
+                <div class="grid-profile">
+                    <div class="profile-text">
+                        <p class="lead-text">
+                            Soy una persona responsable, puntual y enfocada en la mejora continua. Mi formación académica me permite comprender e implementar soluciones tecnológicas, mientras que mi historial laboral ha pulido mis habilidades de comunicación, empatía y trabajo bajo presión en la atención directa al usuario.
+                        </p>
+                        <p>
+                            Busco una oportunidad laboral de **medio tiempo** en Portaviejo, Manta o bajo modalidad remota, idealmente en roles como **Soporte Técnico Junior, Asistente de Sistemas, Soporte de TI o Atención al Cliente/Usuario**, donde pueda aportar con mi compromiso técnico y aptitud de servicio mientras continúo mi preparación universitaria.
+                        </p>
+                    </div>
+                    <div class="profile-details-card">
+                        <h3>Información de Contacto</h3>
+                        <ul class="contact-details-list">
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                                </svg>
+                                <span>Vía Manta Portoviejo, Cerro Guayabal, Manabí, Ecuador</span>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.94.725l.548 2.2a1 1 0 01-.321.988l-1.305.98a10.582 10.582 0 004.872 4.872l.98-1.305a1 1 0 01.988-.321l2.2.548a1 1 0 01.725.94V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z" />
+                                </svg>
+                                <a href="tel:+593978995441">0978995441</a>
+                            </li>
+                            <li>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                                <a href="mailto:jipson03delgado@gmail.com">jipson03delgado@gmail.com</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Interactive Skills Section -->
+        <section id="habilidades" class="section skills-section scroll-reveal">
+            <div class="container">
+                <h2 class="section-title">Habilidades &amp; Competencias</h2>
+                
+                <!-- Filter Controls -->
+                <div class="skills-filter-container">
+                    <button class="filter-btn active" data-filter="all">Todas</button>
+                    <button class="filter-btn" data-filter="tech">Tecnología &amp; TI</button>
+                    <button class="filter-btn" data-filter="service">Atención &amp; Gestión</button>
+                </div>
+
+                <!-- Skills Grid -->
+                <div class="grid-skills">
+                    <!-- HTML5 / CSS3 -->
+                    <div class="skill-card" data-category="tech">
+                        <div class="skill-header">
+                            <span class="skill-icon">🎨</span>
+                            <h4>Maquetación Web (HTML5 &amp; CSS3)</h4>
+                        </div>
+                        <p>Diseño y estructuración de sitios web adaptables y modernos.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 75%;"></div></div>
+                    </div>
+                    <!-- JavaScript -->
+                    <div class="skill-card" data-category="tech">
+                        <div class="skill-header">
+                            <span class="skill-icon">⚡</span>
+                            <h4>JavaScript</h4>
+                        </div>
+                        <p>Interactividad web básica, manipulación del DOM y lógica de cliente.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 60%;"></div></div>
+                    </div>
+                    <!-- Soporte Técnico -->
+                    <div class="skill-card" data-category="tech">
+                        <div class="skill-header">
+                            <span class="skill-icon">🔧</span>
+                            <h4>Soporte Técnico de PCs</h4>
+                        </div>
+                        <p>Diagnóstico de problemas, instalación de software y mantenimiento preventivo.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 80%;"></div></div>
+                    </div>
+                    <!-- Herramientas Ofimáticas -->
+                    <div class="skill-card" data-category="tech">
+                        <div class="skill-header">
+                            <span class="skill-icon">📊</span>
+                            <h4>Herramientas Informáticas</h4>
+                        </div>
+                        <p>Manejo de MS Office (Excel, Word), navegación segura e internet.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 85%;"></div></div>
+                    </div>
+                    <!-- Atención al Cliente -->
+                    <div class="skill-card" data-category="service">
+                        <div class="skill-header">
+                            <span class="skill-icon">🤝</span>
+                            <h4>Atención al Cliente</h4>
+                        </div>
+                        <p>Trato empático, recepción cordial y resolución de reclamos en tiempo real.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 95%;"></div></div>
+                    </div>
+                    <!-- Comunicación Efectiva -->
+                    <div class="skill-card" data-category="service">
+                        <div class="skill-header">
+                            <span class="skill-icon">🗣️</span>
+                            <h4>Comunicación Efectiva</h4>
+                        </div>
+                        <p>Excelente dicción, escucha activa y capacidad para expresarme con claridad.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 90%;"></div></div>
+                    </div>
+                    <!-- Trabajo en Equipo -->
+                    <div class="skill-card" data-category="service">
+                        <div class="skill-header">
+                            <span class="skill-icon">👥</span>
+                            <h4>Trabajo en Equipo</h4>
+                        </div>
+                        <p>Colaboración proactiva y apoyo en picos de alta demanda laboral.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 95%;"></div></div>
+                    </div>
+                    <!-- Organización y Gestión -->
+                    <div class="skill-card" data-category="service">
+                        <div class="skill-header">
+                            <span class="skill-icon">📁</span>
+                            <h4>Organización de Secretaría</h4>
+                        </div>
+                        <p>Gestión documental, archivo de datos y organización operativa del entorno.</p>
+                        <div class="progress-bar-container"><div class="progress-bar" style="width: 80%;"></div></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experiencia" class="section experience-section scroll-reveal">
+            <div class="container">
+                <h2 class="section-title">Experiencia Laboral</h2>
+                
+                <div class="timeline">
+                    <!-- Experience 1 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">Actual / Reciente</div>
+                        <div class="timeline-content">
+                            <h3>Mesero / Atención al Cliente</h3>
+                            <span class="timeline-company">Restaurante “El Aguacate”</span>
+                            <p>
+                                Responsable del trato directo con comensales, garantizando un servicio ágil y amable. Toma y entrega de pedidos, cobros y facturación básica en caja, mantenimiento impecable de la presentación del local y apoyo constante en la resolución de problemas durante las horas más concurridas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Experience 2 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">Temporal / Obra</div>
+                        <div class="timeline-content">
+                            <h3>Ayudante de Topografía (Subcontratado)</h3>
+                            <span class="timeline-company">Subcontrato ARKI – Proyecto de Obra</span>
+                            <p>
+                                Apoyo técnico directo al ingeniero topógrafo en levantamientos topográficos y toma de medidas en campo. Cuidado, traslado y calibración de instrumental de precisión. Señalización rigurosa de puntos de referencia y cumplimiento de protocolos de seguridad en obra.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Experience 3 -->
+                    <div class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-date">Formativo / Comercial</div>
+                        <div class="timeline-content">
+                            <h3>Ayudante / Atención al Cliente</h3>
+                            <span class="timeline-company">Pizzería “Casa Mila”</span>
+                            <p>
+                                Atención en el despacho de pedidos de comida rápida, control de inventario de cocina y mantenimiento del orden y la higiene del espacio de trabajo. Adaptación veloz a cambios operativos y apoyo general al equipo para garantizar la satisfacción del cliente.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="proyectos" class="section projects-section scroll-reveal">
+            <div class="container">
+                <h2 class="section-title">Proyectos Destacados</h2>
+                <div class="grid-projects">
+                    <!-- Project 1 -->
+                    <div class="project-card">
+                        <div class="project-img-placeholder">
+                            <span class="project-tech-badge">HTML / CSS / JS</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h3>Portafolio Web Interactivo</h3>
+                            <p>Diseño y maquetación de una página web personal para presentación de perfil, habilidades dinámicas y opción de CV en formato imprimible. Construido desde cero usando diseño responsivo.</p>
+                            <div class="project-links">
+                                <span class="badge">JavaScript</span>
+                                <span class="badge">CSS Flexbox/Grid</span>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Project 2 -->
+                    <div class="project-card">
+                        <div class="project-img-placeholder">
+                            <span class="project-tech-badge">Base de Datos (SQL)</span>
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="48" height="48">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v10c0 2.21 3.582 4 8 4s8-1.79 8-4V7M4 7c0 2.21 3.582 4 8 4s8-1.79 8-4M4 7c0-2.21 3.582-4 8-4s8 1.79 8 4m0 5c0 2.21-3.582 4-8 4s-8-1.79-8-4" />
+                            </svg>
+                        </div>
+                        <div class="project-info">
+                            <h3>Simulador de Base de Datos para Negocio</h3>
+                            <p>Diseño de esquema relacional y consultas SQL complejas para simular la facturación y control de pedidos en un local comercial. Proyecto académico del semestre de TI.</p>
+                            <div class="project-links">
+                                <span class="badge">Modelado Entidad-Relación</span>
+                                <span class="badge">SQL</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contacto" class="section contact-section scroll-reveal">
+            <div class="container">
+                <h2 class="section-title">Contáctame</h2>
+                <div class="grid-contact">
+                    <!-- Contact Form Card -->
+                    <div class="contact-card-form">
+                        <h3>Envíame un Mensaje</h3>
+                        <form id="contact-form">
+                            <div class="form-group">
+                                <label for="name">Tu Nombre</label>
+                                <input type="text" id="name" required placeholder="Ingresa tu nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label for="email">Correo Electrónico</label>
+                                <input type="email" id="email" required placeholder="ejemplo@correo.com">
+                            </div>
+                            <div class="form-group">
+                                <label for="message">Mensaje</label>
+                                <textarea id="message" rows="4" required placeholder="¿En qué puedo ayudarte?"></textarea>
+                            </div>
+                            <button type="submit" class="btn btn-primary btn-full">Enviar Mensaje</button>
+                        </form>
+                        <div id="form-toast" class="toast hidden">
+                            ¡Mensaje enviado con éxito! Me pondré en contacto contigo pronto.
+                        </div>
+                    </div>
+
+                    <!-- References & PDF Card -->
+                    <div class="contact-details">
+                        <div class="references-block">
+                            <h3>Referencias Personales</h3>
+                            <div class="grid-references">
+                                <div class="reference-card">
+                                    <h4>Sra. Nathaly Anette Jara Gonzales</h4>
+                                    <p>Contacto: <a href="tel:+593963252803">0963252803</a></p>
+                                </div>
+                                <div class="reference-card">
+                                    <h4>Lcda. María Fernanda Cruz Armijos</h4>
+                                    <p>Contacto: <a href="tel:+593961191152">0961191152</a></p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="cv-download-block">
+                            <h3>Currículum en Versión PDF</h3>
+                            <p>¿Prefieres tener una copia física para tu proceso de selección o guardarla como PDF?</p>
+                            <button id="download-cv-btn" class="btn btn-secondary btn-full">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="20" height="20" style="margin-right: 8px; vertical-align: middle;">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                                </svg>
+                                Imprimir / Guardar CV como PDF
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container footer-container">
+            <p>&copy; 2026 Jipson Delgado. Diseñado con HTML, CSS y JS.</p>
+            <p>Portoviejo, Manabí, Ecuador</p>
+        </div>
+    </footer>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
